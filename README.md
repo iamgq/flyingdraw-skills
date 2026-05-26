@@ -6,7 +6,7 @@ Claude Code skills for [FlyingDraw](https://flyingdraw.com) — push wireframes 
 
 ## What is FlyingDraw?
 
-FlyingDraw is a local Excalidraw whiteboard that lets Claude Code generate and push wireframes directly to your browser — in real time, no page reload. You sketch with words, Claude draws.
+FlyingDraw is a collaborative Excalidraw whiteboard that lets Claude Code generate and push wireframes directly to your browser — in real time, no page reload. You sketch with words, Claude draws.
 
 ---
 
@@ -14,32 +14,31 @@ FlyingDraw is a local Excalidraw whiteboard that lets Claude Code generate and p
 
 ### Prerequisites
 
-- [FlyingDraw](https://flyingdraw.com) running locally (`npm run dev` at `localhost:3456`)
+- Access to a hosted FlyingDraw instance and your workspace URL (ask your team admin)
 - Claude Code in your project
 
 ### Setup (one time per project)
 
 **1. Get your workspace URL**
 
-Open FlyingDraw in your browser. Copy the full URL from the address bar — it looks like:
+Your workspace URL is provided by whoever set up the FlyingDraw instance. It looks like:
 
 ```
-http://localhost:3456/b450fda4-9a25-4414-abcd-237b16dfa1df
+https://your-flyingdraw-server.com/b450fda4-9a25-4414-abcd-237b16dfa1df
 ```
 
-That UUID is your private workspace. Keep it — you'll need it in the next step.
+The UUID at the end is your private workspace — no one else shares it.
 
 **2. Create `skills/flyingdraw.md` in your project**
 
 ```markdown
 # FlyingDraw (Remote Skill)
 
-**Workspace URL:** http://localhost:3456/YOUR-UUID-HERE
-(Replace with your URL from the FlyingDraw browser tab)
+**Workspace URL:** https://your-flyingdraw-server.com/YOUR-UUID-HERE
+(Replace with the workspace URL you received)
 
-Before doing anything, fetch the latest skill instructions — try local first, fall back to GitHub:
-1. WebFetch http://localhost:3456/skills/flyingdraw.md
-2. WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+Before doing anything, fetch the latest skill instructions from GitHub:
+- WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
 
 After fetching, follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
 Do not proceed without fetching.
@@ -67,7 +66,7 @@ mock the checkout page
 ```
 
 Claude will:
-1. Check FlyingDraw is running
+1. Check FlyingDraw is reachable
 2. Ask which project and board to save it under
 3. Generate the Excalidraw wireframe JSON
 4. Push it to your canvas via the API
@@ -77,7 +76,7 @@ Claude will:
 
 ## How it works
 
-The stub in your project tells Claude where to find your workspace and where to fetch the latest skill instructions. Claude fetches `flyingdraw.md` from your running FlyingDraw server (fast) or from this repo (fallback), then uses your workspace URL for all API calls.
+The stub in your project tells Claude your workspace URL and where to fetch the latest skill instructions. Claude fetches `flyingdraw.md` from this repo, then uses your workspace URL for all API calls.
 
 Your workspace URL is the only project-specific config — the skill logic always comes from the latest version here.
 
