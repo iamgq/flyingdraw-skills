@@ -32,6 +32,33 @@ It is set directly in the project's `skills/flyingdraw.md` stub (see the Install
 
 ---
 
+## Authentication
+
+FlyingDraw uses a two-layer authentication model to keep workspaces private and secure:
+
+### Layer 1 — Google Sign-In (browser)
+To use FlyingDraw you must first sign in with a Google account. This is a one-time step in the browser and confirms you are a legitimate user. Without signing in, you cannot access any workspace.
+
+### Layer 2 — CLI Token (AI tools)
+AI coding tools (Claude Code, Cursor, Windsurf, etc.) cannot do a browser-based Google sign-in. Instead, once you are signed in, you generate a **CLI token** in the browser and paste it directly into your AI chat session. The tool then uses that token to read and write diagrams on your behalf.
+
+Key properties of CLI tokens:
+- **Scoped** — each token is tied to one specific workspace
+- **Rolling expiry** — the token stays valid as long as it is used; it expires after **30 days of inactivity**
+- **Revocable** — you can revoke any token at any time from the FlyingDraw UI
+- **Never stored in files** — the token lives only in the chat conversation; it is never written to disk
+
+### How to get a token
+1. Open your FlyingDraw workspace in the browser
+2. Click your **avatar** (top-right corner)
+3. Click **Get CLI Token**
+4. Click **Copy** — this copies the raw token value
+5. Paste the token directly into your AI chat when prompted
+
+> **First-time use with an AI tool:** When you invoke the skill for the first time (or after a token expires), the tool will ask you to paste a token. Simply follow the steps above, paste the token into the chat, and the tool will continue automatically. The token is never written to any file.
+
+---
+
 ## Board Structure
 
 Boards in FlyingDraw are organised into **projects**. Every board belongs to exactly one project.
@@ -326,15 +353,26 @@ Elements render bottom-to-top by index. Use ascending 3-character base-36 string
 
 ## Installing this skill in another project (Remote Skill)
 
+### Prerequisites
+
+- A Google account (used for sign-in)
+- FlyingDraw running — either locally (`npm run dev`) or at [flyingdraw.com](https://flyingdraw.com)
+
 ### Setup (one time per project)
 
-1. **Get your workspace URL** — open FlyingDraw in your browser. The full URL in the address bar (e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`) is your workspace URL.
+1. **Sign in with Google** — open FlyingDraw in your browser and sign in. This creates your private workspace and is required before tokens can be generated.
 
-2. **Create `skills/flyingdraw.md`** in your project — download the ready-made stub from:
+2. **Copy your workspace URL** — after signing in, the full URL in the address bar (e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`) is your workspace URL.
 
-   **[https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md)**
+3. **Create `skills/flyingdraw.md`** in your project — download the ready-made stub:
 
-   Or create it manually with this content, replacing the placeholder URL:
+   ```bash
+   curl -o skills/flyingdraw.md https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md
+   ```
+
+   Then open the file and replace `https://YOUR-FLYINGDRAW-URL/YOUR-UUID` with your actual workspace URL from step 2.
+
+   Or create it manually with this content:
 
 ```markdown
 # FlyingDraw (Remote Skill)
@@ -350,9 +388,9 @@ After fetching, follow the instructions using the Workspace URL above as `FLYING
 Do not proceed without fetching.
 ```
 
-> **Tokens are never stored here.** When the skill needs auth, it will ask you to paste a token from FlyingDraw directly into the chat. Tokens live only in conversation context.
+> **Token note:** Tokens are never stored in this file. The first time your AI tool calls FlyingDraw, it will ask you to paste a token. Open FlyingDraw in your browser → click your avatar (top-right) → **Get CLI Token** → **Copy** → paste the token into the chat. The tool will pick it up automatically and never write it to disk.
 
-3. **Reference it in your project's AI instructions file** (`CLAUDE.md`, `.cursorrules`, `AGENTS.md`, etc.):
+4. **Reference it in your project's AI instructions file** (`CLAUDE.md`, `.cursorrules`, `AGENTS.md`, etc.):
 
 ```markdown
 ## Skills
@@ -365,8 +403,10 @@ Do not proceed without fetching.
 When an AI assistant sees a flyingdraw trigger it:
 1. Reads the stub → sees the workspace URL and fetch instruction
 2. Fetches the canonical skill from localhost (fast) or GitHub (fallback)
-3. Uses the workspace URL from the stub as `FLYINGDRAW_URL` for all API calls
+3. Checks the current conversation for a previously pasted token
+4. If no token is found and the API returns 401, asks you to paste one from FlyingDraw (avatar → Get CLI Token)
+5. Uses `FLYINGDRAW_URL` + `?token=TOKEN` for all API calls — token stays in chat, never in files
 
-The workspace URL is the only project-specific setting. The skill logic always comes from the latest version in this repo. Works with Claude Code, Cursor, Windsurf, Copilot Workspace, and any other AI assistant that can read files and run shell commands.
+The workspace URL is the only project-specific setting. Works with Claude Code, Cursor, Windsurf, Copilot Workspace, and any other AI assistant that can read files and run shell commands.
 
 > **Requires:** The `flyingdraw-skills` GitHub repo must be public so `raw.githubusercontent.com` URLs resolve without authentication.
