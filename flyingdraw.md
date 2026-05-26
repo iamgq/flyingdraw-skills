@@ -320,7 +320,7 @@ Elements render bottom-to-top by index. Use ascending strings:
 
 Before doing anything, fetch the latest skill instructions — try local first, fall back to GitHub:
 1. WebFetch http://localhost:3456/skills/flyingdraw.md
-2. WebFetch https://raw.githubusercontent.com/iamgq/flying-draw/main/skills/flyingdraw.md
+2. WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
 
 After fetching, follow the instructions using the Workspace URL above as `FLYINGDRAW_URL`.
 Do not proceed without fetching.
@@ -343,4 +343,4 @@ When an AI assistant sees a flyingdraw trigger it:
 
 The workspace URL is the only project-specific setting. The skill logic always comes from the latest version in this repo.
 
-> **Requires:** The `flying-draw` GitHub repo must be public so `raw.githubusercontent.com` URLs resolve without authentication.
+> **Requires:** The `flyingdraw-skills` GitHub repo must be public so `raw.githubusercontent.com` URLs resolve without authentication.
