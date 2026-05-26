@@ -24,7 +24,7 @@ FlyingDraw is a collaborative Excalidraw whiteboard that lets Claude Code genera
 Your workspace URL is provided by whoever set up the FlyingDraw instance. It looks like:
 
 ```
-https://your-flyingdraw-server.com/b450fda4-9a25-4414-abcd-237b16dfa1df
+https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df
 ```
 
 The UUID at the end is your private workspace — no one else shares it.
@@ -34,7 +34,7 @@ The UUID at the end is your private workspace — no one else shares it.
 ```markdown
 # FlyingDraw (Remote Skill)
 
-**Workspace URL:** https://your-flyingdraw-server.com/YOUR-UUID-HERE
+**Workspace URL:** https://flyingdraw.com/YOUR-UUID-HERE
 (Replace with the workspace URL you received)
 
 Before doing anything, fetch the latest skill instructions from GitHub:
