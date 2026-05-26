@@ -328,9 +328,13 @@ Elements render bottom-to-top by index. Use ascending 3-character base-36 string
 
 ### Setup (one time per project)
 
-1. **Get your workspace URL** — open FlyingDraw in your browser. The full URL in the address bar (e.g. `http://localhost:3456/b450fda4-9a25-4414-abcd-237b16dfa1df`) is your workspace URL.
+1. **Get your workspace URL** — open FlyingDraw in your browser. The full URL in the address bar (e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`) is your workspace URL.
 
-2. **Create `skills/flyingdraw.md`** in your project with this content, replacing the placeholder URL:
+2. **Create `skills/flyingdraw.md`** in your project — download the ready-made stub from:
+
+   **[https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md)**
+
+   Or create it manually with this content, replacing the placeholder URL:
 
 ```markdown
 # FlyingDraw (Remote Skill)
