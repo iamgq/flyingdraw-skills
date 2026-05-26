@@ -355,22 +355,26 @@ Elements render bottom-to-top by index. Use ascending 3-character base-36 string
 
 ### Prerequisites
 
-- A Google account (used for sign-in)
-- FlyingDraw running — either locally (`npm run dev`) or at [flyingdraw.com](https://flyingdraw.com)
+All you need is a **Google account** and access to a FlyingDraw instance (hosted at [flyingdraw.com](https://flyingdraw.com) or self-hosted).
+
+**Getting a workspace URL — two ways:**
+
+- **New user:** Open FlyingDraw and sign in with Google. A private workspace is created for you automatically and its URL appears in the address bar — e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`. Once signed in you can also create additional workspaces from the workspace panel.
+- **Joining a team workspace:** Someone who already has access (e.g. a team admin) shares the workspace URL with you. Open that URL and sign in with Google to join.
+
+Workspaces can be used collaboratively — multiple people can view and edit the same canvas in real time.
 
 ### Setup (one time per project)
 
-1. **Sign in with Google** — open FlyingDraw in your browser and sign in. This creates your private workspace and is required before tokens can be generated.
+1. **Sign in with Google and copy your workspace URL** — open FlyingDraw, sign in with Google, and copy the full URL from the address bar (e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`). You must be signed in before tokens can be generated.
 
-2. **Copy your workspace URL** — after signing in, the full URL in the address bar (e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`) is your workspace URL.
-
-3. **Create `skills/flyingdraw.md`** in your project — download the ready-made stub:
+2. **Create `skills/flyingdraw.md`** in your project — download the ready-made stub:
 
    ```bash
    curl -o skills/flyingdraw.md https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md
    ```
 
-   Then open the file and replace `https://YOUR-FLYINGDRAW-URL/YOUR-UUID` with your actual workspace URL from step 2.
+   Then open the file and replace `https://YOUR-FLYINGDRAW-URL/YOUR-UUID` with your actual workspace URL from step 1.
 
    Or create it manually with this content:
 
@@ -390,7 +394,7 @@ Do not proceed without fetching.
 
 > **Token note:** Tokens are never stored in this file. The first time your AI tool calls FlyingDraw, it will ask you to paste a token. Open FlyingDraw in your browser → click your avatar (top-right) → **Get CLI Token** → **Copy** → paste the token into the chat. The tool will pick it up automatically and never write it to disk.
 
-4. **Reference it in your project's AI instructions file** (`CLAUDE.md`, `.cursorrules`, `AGENTS.md`, etc.):
+3. **Reference it in your project's AI instructions file** (`CLAUDE.md`, `.cursorrules`, `AGENTS.md`, etc.):
 
 ```markdown
 ## Skills
