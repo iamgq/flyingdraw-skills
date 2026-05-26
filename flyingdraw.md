@@ -355,18 +355,18 @@ Elements render bottom-to-top by index. Use ascending 3-character base-36 string
 
 ### Prerequisites
 
-All you need is a **Google account** and access to a FlyingDraw instance (hosted at [flyingdraw.com](https://flyingdraw.com) or self-hosted).
+All you need is a **Google account**. FlyingDraw is hosted at [flyingdraw.com](https://flyingdraw.com) — no self-hosting required.
 
-**Getting a workspace URL — two ways:**
+**Getting your workspace URL:**
 
-- **New user:** Open FlyingDraw and sign in with Google. A private workspace is created for you automatically and its URL appears in the address bar — e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`. Once signed in you can also create additional workspaces from the workspace panel.
-- **Joining a team workspace:** Someone who already has access (e.g. a team admin) shares the workspace URL with you. Open that URL and sign in with Google to join.
+- **New user:** Open [flyingdraw.com](https://flyingdraw.com) and sign in with Google. A private workspace is created for you automatically. Your workspace URL appears in the address bar and looks like `https://www.flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`. Once signed in you can create additional workspaces from the workspace panel.
+- **Joining a team workspace:** Someone with access (e.g. a team member) shares the workspace URL with you. Open it and sign in with Google to join.
 
-Workspaces can be used collaboratively — multiple people can view and edit the same canvas in real time.
+Workspaces support real-time collaboration — multiple people can view and edit the same canvas simultaneously.
 
 ### Setup (one time per project)
 
-1. **Sign in with Google and copy your workspace URL** — open FlyingDraw, sign in with Google, and copy the full URL from the address bar (e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`). You must be signed in before tokens can be generated.
+1. **Sign in and copy your workspace URL** — open [flyingdraw.com](https://flyingdraw.com), sign in with Google, and copy the full URL from the address bar. It will look like `https://www.flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`.
 
 2. **Create `skills/flyingdraw.md`** in your project — download the ready-made stub:
 
@@ -374,15 +374,15 @@ Workspaces can be used collaboratively — multiple people can view and edit the
    curl -o skills/flyingdraw.md https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md
    ```
 
-   Then open the file and replace `https://YOUR-FLYINGDRAW-URL/YOUR-UUID` with your actual workspace URL from step 1.
+   Then open the file and replace `https://www.flyingdraw.com/YOUR-UUID` with your actual workspace URL from step 1.
 
-   Or create it manually with this content:
+   Or create it manually:
 
 ```markdown
 # FlyingDraw (Remote Skill)
 
-**Workspace URL:** https://YOUR-FLYINGDRAW-URL/YOUR-UUID
-(Replace with your workspace URL from the FlyingDraw browser tab.)
+**Workspace URL:** https://www.flyingdraw.com/YOUR-UUID
+(Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
 
 Before doing anything, fetch the latest skill instructions — try local first, fall back to GitHub:
 1. WebFetch http://localhost:3456/skills/flyingdraw.md
@@ -392,8 +392,6 @@ After fetching, follow the instructions using the Workspace URL above as `FLYING
 Do not proceed without fetching.
 ```
 
-> **Token note:** Tokens are never stored in this file. The first time your AI tool calls FlyingDraw, it will ask you to paste a token. Open FlyingDraw in your browser → click your avatar (top-right) → **Get CLI Token** → **Copy** → paste the token into the chat. The tool will pick it up automatically and never write it to disk.
-
 3. **Reference it in your project's AI instructions file** (`CLAUDE.md`, `.cursorrules`, `AGENTS.md`, etc.):
 
 ```markdown
@@ -401,6 +399,13 @@ Do not proceed without fetching.
 - **FlyingDraw** — Push wireframes to the live canvas. Invoke with "flyingdraw …",
   "wireframe …", "sketch …", etc. See `skills/flyingdraw.md`.
 ```
+
+4. **Connect your AI tool with a token** — your AI tool needs a token to access your workspace. To get one:
+   1. Open [flyingdraw.com](https://flyingdraw.com) in your browser
+   2. Click your **avatar** (top-right) → **Get CLI Token** → **Copy**
+   3. The first time you invoke FlyingDraw from your AI tool (e.g. Claude Code, Cursor), it will prompt you for a token — simply paste it into the chat and the tool will continue automatically
+
+   > Tokens are never stored in any file. They live only in the chat session. If a token expires (after 30 days of inactivity), repeat the steps above to get a fresh one.
 
 ### How it works
 

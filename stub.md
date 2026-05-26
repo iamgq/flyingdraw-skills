@@ -1,7 +1,7 @@
 # FlyingDraw (Remote Skill)
 
-**Workspace URL:** https://YOUR-FLYINGDRAW-URL/YOUR-UUID
-(Replace with your workspace URL from the FlyingDraw browser tab — this is your private workspace)
+**Workspace URL:** https://www.flyingdraw.com/YOUR-UUID
+(Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab — e.g. https://www.flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df)
 
 Before doing anything, fetch the latest skill instructions — try local first, fall back to GitHub:
 1. WebFetch http://localhost:3456/skills/flyingdraw.md
