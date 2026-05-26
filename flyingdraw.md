@@ -23,6 +23,7 @@ FlyingDraw is an Excalidraw whiteboard — browser live-updates instantly via SS
 Each user has an isolated workspace identified by a UUID in the URL path.
 
 `FLYINGDRAW_URL` is the **full workspace URL** — it already includes the UUID path:
+- e.g. `http://localhost:3456/b450fda4-9a25-4414-abcd-237b16dfa1df`
 - e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`
 
 It is set directly in the project's `skills/flyingdraw.md` stub (see the Installing section). All API calls use `$FLYINGDRAW_URL` as the base — no separate workspace ID variable needed.
@@ -54,34 +55,49 @@ When pushing a diagram you must always supply both `_boardProject` and `_boardNa
 
 ## Steps
 
-### Step 1 — Resolve the workspace URL and check the server is running
+### Step 1 — Resolve the workspace URL, token, and check the server is running
 
-Read `FLYINGDRAW_URL` from the stub file that invoked this skill (or the environment).
+Read `FLYINGDRAW_URL` from the stub file that invoked this skill. This is the bare workspace URL — it does **not** contain a token.
+
+**Set up the token for this session:**
+- Scan the current conversation for a URL that matches the workspace base and contains `?token=` — the user may have already pasted one.
+- If found, extract the token value → set `TOKEN_PARAM=?token=VALUE`.
+- If not found, set `TOKEN_PARAM=""` for now; you will request one below if needed.
 
 ```bash
 echo "FLYINGDRAW_URL=$FLYINGDRAW_URL"
-curl -s "$FLYINGDRAW_URL/api/projects" > /dev/null 2>&1 && echo "running" || echo "not running"
+curl -s "${FLYINGDRAW_URL}/api/projects${TOKEN_PARAM}" > /dev/null 2>&1 && echo "running" || echo "not running"
 ```
 
 - If `FLYINGDRAW_URL` is empty: tell the user:
-  > "Your `skills/flyingdraw.md` stub is missing the Workspace URL. Open FlyingDraw in your browser, copy the full URL from the address bar (e.g. `https://flyingdraw.com/b450fda4-…`), and paste it into the stub as shown in the Installing section."
+  > "Your `skills/flyingdraw.md` stub is missing the Workspace URL. Open FlyingDraw in your browser, copy the full URL from the address bar (e.g. `http://localhost:3456/b450fda4-…`), and paste it into the stub as shown in the Installing section."
   > Stop here.
 - If **not running**: tell the user:
-  > "FlyingDraw isn't reachable at $FLYINGDRAW_URL. Check that the server is running and the workspace URL in your stub is correct."
+  > "FlyingDraw isn't reachable at `$FLYINGDRAW_URL`. Check that the server is running and the workspace URL in your stub is correct."
   > Stop here.
+
+**Token request flow** — trigger this whenever any API call returns `401`:
+1. Tell the user:
+   > "FlyingDraw needs an access token. In your browser, open the workspace, click your avatar (top-right), click **Get CLI Token**, copy the token, and paste it here."
+2. When the user pastes a value, extract the token:
+   - If it looks like a raw token (hex string, no spaces) → use it directly.
+   - If it's a URL containing `?token=VALUE` → extract `VALUE`.
+3. Set `TOKEN_PARAM=?token=TOKEN_VALUE` and use it for all remaining API calls.
+4. **Never write the token to any file** — it lives only in this conversation.
+5. Retry the request that triggered the 401.
 
 ### Step 2 — Ask which project and board name to use
 
 Fetch the current project structure:
 ```bash
-curl -s "$FLYINGDRAW_URL/api/projects"
+curl -s "$FLYINGDRAW_URL/api/projects${TOKEN_PARAM}"
 ```
 
 This returns a JSON array like:
 ```json
 [
-  { "project": "Marketing",     "boards": ["Landing Page", "Pricing Page"] },
-  { "project": "Mobile App",    "boards": ["Onboarding", "Dashboard"] },
+  { "project": "ZR",            "boards": ["Ask ZR Context CTA", "Chat UI"] },
+  { "project": "Coach",         "boards": ["Dashboard", "Calendar"] },
   { "project": "Uncategorised", "boards": ["Playground"] }
 ]
 ```
@@ -90,8 +106,8 @@ Present the structure to the user and ask:
 
 > "Which project should this board go under?
 >
-> **Marketing** — Landing Page, Pricing Page
-> **Mobile App** — Onboarding, Dashboard
+> **ZR** — Ask ZR Context CTA, Chat UI
+> **Coach** — Dashboard, Calendar
 > **Uncategorised** — Playground
 >
 > Pick an existing project or type a new name. What should the board be called?"
@@ -104,7 +120,7 @@ Wait for both answers before continuing. Store them as `$BOARD_PROJECT` and `$BO
 
 ### Step 3 — Read the current diagram (optional but recommended)
 ```bash
-curl -s "$FLYINGDRAW_URL/api/diagram"
+curl -s "$FLYINGDRAW_URL/api/diagram${TOKEN_PARAM}"
 ```
 - If it has existing elements you should preserve, keep them or ask the user
 - If the user said "new diagram" or "fresh", ignore existing content
@@ -139,10 +155,13 @@ Design the wireframe based on the user's requirement. Follow the element format 
 Send the diagram via the API — **never write files directly**:
 
 ```bash
-curl -s -X PUT "$FLYINGDRAW_URL/api/diagram" \
+curl -s -X PUT "${FLYINGDRAW_URL}/api/diagram${TOKEN_PARAM}" \
   -H "Content-Type: application/json" \
   -d '<JSON with _boardName and _boardProject fields>'
 ```
+
+If the response is `{"error":"token_expired"}` or `{"error":"unauthorized"}`:
+- Follow the **Token request flow** from Step 1 — ask the user to paste a fresh token and retry.
 
 Always include both `_boardName` and `_boardProject` in the top-level JSON:
 
@@ -207,7 +226,7 @@ Tell the user:
 | `seed` | number | Any integer (controls rough.js randomness) |
 | `version` | number | `1` |
 | `versionNonce` | number | Any integer |
-| `index` | string | Fractional z-order string: `"a1"` < `"a2"` < `"b1"` |
+| `index` | string | Fractional z-order string — must be 3+ chars, e.g. `"a01"` `"a02"` `"a0a"` |
 | `updated` | number | Unix ms timestamp e.g. `1700000000000` |
 | `link` | null | Always `null` |
 | `locked` | boolean | `false` |
@@ -245,8 +264,10 @@ Tell the user:
 ```
 
 ### Z-order (index field)
-Elements render bottom-to-top by index. Use ascending strings:
-`"a01"` → `"a02"` → `"a03"` ... background rects first, text on top.
+Elements render bottom-to-top by index. Use ascending 3-character base-36 strings:
+`"a01"` → `"a02"` → `"a03"` → ... → `"a09"` → `"a0a"` → `"a0b"` → ... background rects first, text on top.
+
+**Critical:** Index values must be exactly 3+ characters in base-36 format (letter + two alphanumeric chars using `0-9a-z`). Never use 2-character values like `"a1"` or `"c7"` — these cause "invalid order key" errors that break drawing on the board. For up to 36 elements stay in the `a0?` range (`a01`–`a0z`); for more continue `a10`, `a11`, ... `a1z`, `a20`, etc.
 
 ---
 
@@ -265,7 +286,7 @@ Elements render bottom-to-top by index. Use ascending strings:
       "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid",
       "roughness": 0, "opacity": 100, "isDeleted": false,
       "groupIds": [], "frameId": null, "seed": 1, "version": 1,
-      "versionNonce": 1, "index": "a1", "updated": 1700000000000,
+      "versionNonce": 1, "index": "a01", "updated": 1700000000000,
       "link": null, "locked": false, "boundElements": null
     },
     {
@@ -275,7 +296,7 @@ Elements render bottom-to-top by index. Use ascending strings:
       "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid",
       "roughness": 0, "opacity": 100, "isDeleted": false,
       "groupIds": [], "frameId": null, "seed": 2, "version": 1,
-      "versionNonce": 2, "index": "a2", "updated": 1700000000001,
+      "versionNonce": 2, "index": "a02", "updated": 1700000000001,
       "link": null, "locked": false, "boundElements": null,
       "text": "Nav Bar", "fontSize": 18, "fontFamily": 1,
       "textAlign": "left", "verticalAlign": "top",
@@ -305,22 +326,25 @@ Elements render bottom-to-top by index. Use ascending strings:
 
 ### Setup (one time per project)
 
-1. **Get your workspace URL** — open FlyingDraw in your browser. The full URL in the address bar (e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`) is your workspace URL.
+1. **Get your workspace URL** — open FlyingDraw in your browser. The full URL in the address bar (e.g. `http://localhost:3456/b450fda4-9a25-4414-abcd-237b16dfa1df`) is your workspace URL.
 
 2. **Create `skills/flyingdraw.md`** in your project with this content, replacing the placeholder URL:
 
 ```markdown
 # FlyingDraw (Remote Skill)
 
-**Workspace URL:** https://flyingdraw.com/YOUR-UUID-HERE
-(Replace with your URL from the FlyingDraw browser tab — this is your private workspace)
+**Workspace URL:** https://YOUR-FLYINGDRAW-URL/YOUR-UUID
+(Replace with your workspace URL from the FlyingDraw browser tab.)
 
-Before doing anything, fetch the latest skill instructions from GitHub:
-- WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+Before doing anything, fetch the latest skill instructions — try local first, fall back to GitHub:
+1. WebFetch http://localhost:3456/skills/flyingdraw.md
+2. WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
 
 After fetching, follow the instructions using the Workspace URL above as `FLYINGDRAW_URL`.
 Do not proceed without fetching.
 ```
+
+> **Tokens are never stored here.** When the skill needs auth, it will ask you to paste a token from FlyingDraw directly into the chat. Tokens live only in conversation context.
 
 3. **Reference it in `CLAUDE.md`**:
 
@@ -334,7 +358,9 @@ Do not proceed without fetching.
 
 When an AI assistant sees a flyingdraw trigger it:
 1. Reads the stub → sees the workspace URL and fetch instruction
-2. Fetches the canonical skill from this GitHub repo
+2. Fetches the canonical skill from localhost (fast) or GitHub (fallback)
 3. Uses the workspace URL from the stub as `FLYINGDRAW_URL` for all API calls
 
 The workspace URL is the only project-specific setting. The skill logic always comes from the latest version in this repo.
+
+> **Requires:** The `flyingdraw-skills` GitHub repo must be public so `raw.githubusercontent.com` URLs resolve without authentication.
