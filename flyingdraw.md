@@ -20,6 +20,8 @@ When the user says any of:
 Push a low-fidelity wireframe diagram to the user's FlyingDraw canvas.
 FlyingDraw is an Excalidraw whiteboard — browser live-updates instantly via SSE (no reload needed).
 
+This skill works with any AI coding assistant that can read files and run shell commands — Claude Code, Cursor, Windsurf, Copilot Workspace, etc.
+
 Each user has an isolated workspace identified by a UUID in the URL path.
 
 `FLYINGDRAW_URL` is the **full workspace URL** — it already includes the UUID path:
@@ -346,7 +348,7 @@ Do not proceed without fetching.
 
 > **Tokens are never stored here.** When the skill needs auth, it will ask you to paste a token from FlyingDraw directly into the chat. Tokens live only in conversation context.
 
-3. **Reference it in `CLAUDE.md`**:
+3. **Reference it in your project's AI instructions file** (`CLAUDE.md`, `.cursorrules`, `AGENTS.md`, etc.):
 
 ```markdown
 ## Skills
@@ -361,6 +363,6 @@ When an AI assistant sees a flyingdraw trigger it:
 2. Fetches the canonical skill from localhost (fast) or GitHub (fallback)
 3. Uses the workspace URL from the stub as `FLYINGDRAW_URL` for all API calls
 
-The workspace URL is the only project-specific setting. The skill logic always comes from the latest version in this repo.
+The workspace URL is the only project-specific setting. The skill logic always comes from the latest version in this repo. Works with Claude Code, Cursor, Windsurf, Copilot Workspace, and any other AI assistant that can read files and run shell commands.
 
 > **Requires:** The `flyingdraw-skills` GitHub repo must be public so `raw.githubusercontent.com` URLs resolve without authentication.
