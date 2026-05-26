@@ -23,7 +23,6 @@ FlyingDraw is an Excalidraw whiteboard — browser live-updates instantly via SS
 Each user has an isolated workspace identified by a UUID in the URL path.
 
 `FLYINGDRAW_URL` is the **full workspace URL** — it already includes the UUID path:
-- e.g. `http://localhost:3456/b450fda4-9a25-4414-abcd-237b16dfa1df`
 - e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`
 
 It is set directly in the project's `skills/flyingdraw.md` stub (see the Installing section). All API calls use `$FLYINGDRAW_URL` as the base — no separate workspace ID variable needed.
@@ -44,10 +43,10 @@ Project
 └── Board
 ```
 
-- A **project** is a named group (e.g. `"ZR"`, `"Coach"`, `"Flyingdraw"`). Created automatically when first used.
-- A **board** is a saved Excalidraw diagram within a project (e.g. `"Chat UI"`, `"Onboarding Flow"`).
+- A **project** is a named group (e.g. `"Marketing"`, `"Mobile App"`, `"Design System"`). Created automatically when first used.
+- A **board** is a saved Excalidraw diagram within a project (e.g. `"Onboarding Flow"`, `"Dashboard v2"`).
 - Boards without an explicit project land in **`Uncategorised`**.
-- The canonical way to reference a board is `Project / Board name` (e.g. `ZR / Chat UI`).
+- The canonical way to reference a board is `Project / Board name` (e.g. `Mobile App / Onboarding Flow`).
 
 When pushing a diagram you must always supply both `_boardProject` and `_boardName`. The API rejects neither — but omitting them means the diagram only updates the live canvas and is not saved to any board.
 
@@ -65,12 +64,10 @@ curl -s "$FLYINGDRAW_URL/api/projects" > /dev/null 2>&1 && echo "running" || ech
 ```
 
 - If `FLYINGDRAW_URL` is empty: tell the user:
-  > "Your `skills/flyingdraw.md` stub is missing the Workspace URL. Open FlyingDraw in your browser, copy the full URL from the address bar (e.g. `http://localhost:3456/b450fda4-…`), and paste it into the stub as shown in the Installing section."
+  > "Your `skills/flyingdraw.md` stub is missing the Workspace URL. Open FlyingDraw in your browser, copy the full URL from the address bar (e.g. `https://flyingdraw.com/b450fda4-…`), and paste it into the stub as shown in the Installing section."
   > Stop here.
 - If **not running**: tell the user:
-  > "FlyingDraw isn't running. Start it with:
-  > `cd ~/Desktop/POC/flying-draw && npm run dev`
-  > Then try again."
+  > "FlyingDraw isn't reachable at $FLYINGDRAW_URL. Check that the server is running and the workspace URL in your stub is correct."
   > Stop here.
 
 ### Step 2 — Ask which project and board name to use
@@ -83,8 +80,8 @@ curl -s "$FLYINGDRAW_URL/api/projects"
 This returns a JSON array like:
 ```json
 [
-  { "project": "ZR",            "boards": ["Ask ZR Context CTA", "Chat UI"] },
-  { "project": "Coach",         "boards": ["Dashboard", "Calendar"] },
+  { "project": "Marketing",     "boards": ["Landing Page", "Pricing Page"] },
+  { "project": "Mobile App",    "boards": ["Onboarding", "Dashboard"] },
   { "project": "Uncategorised", "boards": ["Playground"] }
 ]
 ```
@@ -93,8 +90,8 @@ Present the structure to the user and ask:
 
 > "Which project should this board go under?
 >
-> **ZR** — Ask ZR Context CTA, Chat UI
-> **Coach** — Dashboard, Calendar
+> **Marketing** — Landing Page, Pricing Page
+> **Mobile App** — Onboarding, Dashboard
 > **Uncategorised** — Playground
 >
 > Pick an existing project or type a new name. What should the board be called?"
@@ -308,19 +305,18 @@ Elements render bottom-to-top by index. Use ascending strings:
 
 ### Setup (one time per project)
 
-1. **Get your workspace URL** — open FlyingDraw in your browser. The full URL in the address bar (e.g. `http://localhost:3456/b450fda4-9a25-4414-abcd-237b16dfa1df`) is your workspace URL.
+1. **Get your workspace URL** — open FlyingDraw in your browser. The full URL in the address bar (e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`) is your workspace URL.
 
 2. **Create `skills/flyingdraw.md`** in your project with this content, replacing the placeholder URL:
 
 ```markdown
 # FlyingDraw (Remote Skill)
 
-**Workspace URL:** https://YOUR-FLYINGDRAW-URL/YOUR-UUID
+**Workspace URL:** https://flyingdraw.com/YOUR-UUID-HERE
 (Replace with your URL from the FlyingDraw browser tab — this is your private workspace)
 
-Before doing anything, fetch the latest skill instructions — try local first, fall back to GitHub:
-1. WebFetch http://localhost:3456/skills/flyingdraw.md
-2. WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+Before doing anything, fetch the latest skill instructions from GitHub:
+- WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
 
 After fetching, follow the instructions using the Workspace URL above as `FLYINGDRAW_URL`.
 Do not proceed without fetching.
@@ -338,9 +334,7 @@ Do not proceed without fetching.
 
 When an AI assistant sees a flyingdraw trigger it:
 1. Reads the stub → sees the workspace URL and fetch instruction
-2. Fetches the canonical skill from localhost (fast) or GitHub (fallback)
+2. Fetches the canonical skill from this GitHub repo
 3. Uses the workspace URL from the stub as `FLYINGDRAW_URL` for all API calls
 
 The workspace URL is the only project-specific setting. The skill logic always comes from the latest version in this repo.
-
-> **Requires:** The `flyingdraw-skills` GitHub repo must be public so `raw.githubusercontent.com` URLs resolve without authentication.
