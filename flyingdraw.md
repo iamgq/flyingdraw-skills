@@ -25,8 +25,7 @@ This skill works with any AI coding assistant that can read files and run shell 
 Each user has an isolated workspace identified by a UUID in the URL path.
 
 `FLYINGDRAW_URL` is the **full workspace URL** — it already includes the UUID path:
-- e.g. `http://localhost:3456/b450fda4-9a25-4414-abcd-237b16dfa1df`
-- e.g. `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`
+- e.g. `https://www.flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`
 
 It is set directly in the project's `skills/flyingdraw.md` stub (see the Installing section). All API calls use `$FLYINGDRAW_URL` as the base — no separate workspace ID variable needed.
 
@@ -99,7 +98,7 @@ curl -s "${FLYINGDRAW_URL}/api/projects${TOKEN_PARAM}" > /dev/null 2>&1 && echo 
 ```
 
 - If `FLYINGDRAW_URL` is empty: tell the user:
-  > "Your `skills/flyingdraw.md` stub is missing the Workspace URL. Open FlyingDraw in your browser, copy the full URL from the address bar (e.g. `http://localhost:3456/b450fda4-…`), and paste it into the stub as shown in the Installing section."
+  > "Your `skills/flyingdraw.md` stub is missing the Workspace URL. Open FlyingDraw in your browser, copy the full URL from the address bar (e.g. `https://www.flyingdraw.com/b450fda4-…`), and paste it into the stub as shown in the Installing section."
   > Stop here.
 - If **not running**: tell the user:
   > "FlyingDraw isn't reachable at `$FLYINGDRAW_URL`. Check that the server is running and the workspace URL in your stub is correct."
@@ -125,8 +124,8 @@ curl -s "$FLYINGDRAW_URL/api/projects${TOKEN_PARAM}"
 This returns a JSON array like:
 ```json
 [
-  { "project": "ZR",            "boards": ["Ask ZR Context CTA", "Chat UI"] },
-  { "project": "Coach",         "boards": ["Dashboard", "Calendar"] },
+  { "project": "Marketing",     "boards": ["Landing Page", "Pricing Page"] },
+  { "project": "Mobile App",   "boards": ["Dashboard", "Onboarding"] },
   { "project": "Uncategorised", "boards": ["Playground"] }
 ]
 ```
@@ -135,8 +134,8 @@ Present the structure to the user and ask:
 
 > "Which project should this board go under?
 >
-> **ZR** — Ask ZR Context CTA, Chat UI
-> **Coach** — Dashboard, Calendar
+> **Marketing** — Landing Page, Pricing Page
+> **Mobile App** — Dashboard, Onboarding
 > **Uncategorised** — Playground
 >
 > Pick an existing project or type a new name. What should the board be called?"
