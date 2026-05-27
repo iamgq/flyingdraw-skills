@@ -14,8 +14,14 @@ FlyingDraw is a collaborative Excalidraw whiteboard that lets your AI coding ass
 
 ## Prerequisites
 
-- Access to a hosted FlyingDraw instance and your workspace URL (ask your team admin)
-- Your workspace URL looks like: `https://flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`
+All you need is a **Google account**. FlyingDraw is hosted at [flyingdraw.com](https://flyingdraw.com) — no setup required.
+
+**Getting your workspace URL:**
+
+- **New user:** Open [flyingdraw.com](https://flyingdraw.com) and sign in with Google. A private workspace is created automatically and its URL appears in the address bar — e.g. `https://www.flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`. Once signed in you can create additional workspaces from the workspace panel.
+- **Joining a team workspace:** A team member shares the workspace URL with you. Open it and sign in with Google to join.
+
+Workspaces support real-time collaboration — multiple people can view and edit the same canvas simultaneously.
 
 ---
 
@@ -23,12 +29,22 @@ FlyingDraw is a collaborative Excalidraw whiteboard that lets your AI coding ass
 
 ### Claude Code
 
-**1. Create `skills/flyingdraw.md` in your project:**
+**1. Add `skills/flyingdraw.md` to your project**
 
+**[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root.
+
+Or via terminal:
+```bash
+mkdir -p skills && curl -o skills/flyingdraw.md \
+  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md
+```
+
+Or create it manually:
 ```markdown
 # FlyingDraw (Remote Skill)
 
-**Workspace URL:** https://flyingdraw.com/YOUR-UUID-HERE
+**Workspace URL:** https://www.flyingdraw.com/YOUR-UUID
+(Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
 
 Before doing anything, fetch the latest skill instructions from GitHub:
 - WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
@@ -37,13 +53,29 @@ After fetching, follow the instructions using the Workspace URL above as FLYINGD
 Do not proceed without fetching.
 ```
 
-**2. Register it in `CLAUDE.md`:**
+**2. Replace `YOUR-UUID` with your workspace UUID**
+
+Open `skills/flyingdraw.md` and replace `YOUR-UUID` with the UUID from your FlyingDraw URL (the part after `flyingdraw.com/`).
+
+**3. Register it in `CLAUDE.md`:**
 
 ```markdown
 ## Skills
 - **FlyingDraw** — Push wireframes to the live canvas. Invoke with "flyingdraw …",
   "wireframe …", "sketch …", etc. See `skills/flyingdraw.md`.
 ```
+
+**4. Get a token and connect**
+
+Your AI tool accesses FlyingDraw using a CLI token — not your Google password.
+
+To get a token:
+1. Open [flyingdraw.com](https://flyingdraw.com) in your browser
+2. Click your **avatar** (top-right) → **Get CLI Token** → **Copy**
+
+The first time you invoke FlyingDraw from Claude Code, it will ask for the token. Simply paste it into the chat — Claude Code picks it up automatically and never writes it to any file.
+
+> Tokens expire after **30 days of inactivity**. If prompted again, just copy a fresh one from FlyingDraw and paste it in.
 
 ---
 
