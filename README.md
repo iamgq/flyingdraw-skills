@@ -31,12 +31,12 @@ Workspaces support real-time collaboration — multiple people can view and edit
 
 **1. Add `skills/flyingdraw.md` to your project**
 
-**[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root.
+**[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root.
 
 Or via terminal:
 ```bash
 mkdir -p skills && curl -o skills/flyingdraw.md \
-  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md
+  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
 ```
 
 Or create it manually:
@@ -47,7 +47,7 @@ Or create it manually:
 (Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
 
 Before doing anything, fetch the latest skill instructions from GitHub:
-- WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+- WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/skill.md
 
 After fetching, follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
 Do not proceed without fetching.
@@ -83,12 +83,12 @@ The first time you invoke FlyingDraw from Claude Code, it will ask for the token
 
 **1. Add `skills/flyingdraw.md` to your project**
 
-**[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root.
+**[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root.
 
 Or via terminal:
 ```bash
 mkdir -p skills && curl -o skills/flyingdraw.md \
-  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md
+  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
 ```
 
 **2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.
@@ -109,12 +109,12 @@ mkdir -p skills && curl -o skills/flyingdraw.md \
 
 **1. Add `skills/flyingdraw.md` to your project**
 
-**[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root.
+**[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root.
 
 Or via terminal:
 ```bash
 mkdir -p skills && curl -o skills/flyingdraw.md \
-  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md
+  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
 ```
 
 **2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.
@@ -135,7 +135,7 @@ mkdir -p skills && curl -o skills/flyingdraw.md \
 
 **1. Create `.cursor/rules/flyingdraw.mdc` in your project:**
 
-**[⬇ Download flyingdraw.mdc](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md)** — save it as `.cursor/rules/flyingdraw.mdc`.
+**[⬇ Download flyingdraw.mdc](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md)** — save it as `.cursor/rules/flyingdraw.mdc`.
 
 Or create it manually:
 ```markdown
@@ -150,7 +150,7 @@ alwaysApply: false
 (Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
 
 When triggered, fetch the latest skill instructions from GitHub:
-- Fetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+- Fetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/skill.md
 
 Then follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
 Do not proceed without fetching.
@@ -173,7 +173,7 @@ Do not proceed without fetching.
 (Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
 
 When the user says "flyingdraw", "wireframe", "sketch", or "mock":
-1. Fetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+1. Fetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/skill.md
 2. Follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
 Do not proceed without fetching.
 ```
@@ -195,7 +195,7 @@ Do not proceed without fetching.
 (Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
 
 When the user says "flyingdraw", "wireframe", "sketch", or "mock":
-1. Fetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+1. Fetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/skill.md
 2. Follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
 Do not proceed without fetching.
 ```
@@ -243,7 +243,7 @@ The stub is the only file you own — the skill logic is always fetched fresh fr
 
 ## Advanced / contributing
 
-The full skill instructions live in [`flyingdraw.md`](./flyingdraw.md) in this repo. You don't need to read it to use the skill — it's there if you want to understand how the AI generates wireframes, or to contribute improvements.
+The full skill instructions live in [`skill.md`](./skill.md) in this repo. You don't need to read it to use the skill — it's there if you want to understand how the AI generates wireframes, or to contribute improvements.
 
 It covers:
 - Board and project structure
