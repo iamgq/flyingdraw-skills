@@ -1,3 +1,8 @@
+---
+name: flyingdraw
+description: Push wireframes and diagrams to a live FlyingDraw/Excalidraw canvas. Use when the user says "flyingdraw", "wireframe", "sketch", "draw [something]", "mock [something]", or "show me [something] in flyingdraw".
+---
+
 # FlyingDraw (Remote Skill)
 
 **Workspace URL:** https://www.flyingdraw.com/YOUR-UUID
