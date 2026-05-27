@@ -372,7 +372,7 @@ Workspaces support real-time collaboration — multiple people can view and edit
 2. **Create `skills/flyingdraw.md`** in your project — download the ready-made stub:
 
    ```bash
-   curl -o skills/flyingdraw.md https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md
+   curl -o skills/flyingdraw.md https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
    ```
 
    Then open the file and replace `https://www.flyingdraw.com/YOUR-UUID` with your actual workspace URL from step 1.
@@ -386,7 +386,7 @@ Workspaces support real-time collaboration — multiple people can view and edit
 (Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
 
 Before doing anything, fetch the latest skill instructions from GitHub:
-- WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+- WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/skill.md
 
 After fetching, follow the instructions using the Workspace URL above as `FLYINGDRAW_URL`.
 Do not proceed without fetching.
