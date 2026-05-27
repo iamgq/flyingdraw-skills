@@ -351,7 +351,7 @@ Elements render bottom-to-top by index. Use ascending 3-character base-36 string
 
 ---
 
-## Installing this skill in another project (Remote Skill)
+## Installing this skill in your project
 
 ### Prerequisites
 
@@ -364,19 +364,24 @@ All you need is a **Google account**. FlyingDraw is hosted at [flyingdraw.com](h
 
 Workspaces support real-time collaboration — multiple people can view and edit the same canvas simultaneously.
 
-### Setup (one time per project)
+---
 
-1. **Sign in and copy your workspace URL** — open [flyingdraw.com](https://flyingdraw.com), sign in with Google, and copy the full URL from the address bar. It will look like `https://www.flyingdraw.com/b450fda4-9a25-4414-abcd-237b16dfa1df`.
+### Setup by tool
 
-2. **Create `skills/flyingdraw.md`** in your project — download the ready-made stub:
+#### Claude Code
 
-   ```bash
-   curl -o skills/flyingdraw.md https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md
-   ```
+**1. Add `skills/flyingdraw.md` to your project**
 
-   Then open the file and replace `https://www.flyingdraw.com/YOUR-UUID` with your actual workspace URL from step 1.
+Download the stub file directly:
 
-   Or create it manually:
+> 📄 **[Download skills/flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md)** — save it as `skills/flyingdraw.md` in your project root
+
+Or via terminal:
+```bash
+mkdir -p skills && curl -o skills/flyingdraw.md https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md
+```
+
+Or create it manually with this content:
 
 ```markdown
 # FlyingDraw (Remote Skill)
@@ -384,15 +389,18 @@ Workspaces support real-time collaboration — multiple people can view and edit
 **Workspace URL:** https://www.flyingdraw.com/YOUR-UUID
 (Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
 
-Before doing anything, fetch the latest skill instructions — try local first, fall back to GitHub:
-1. WebFetch http://localhost:3456/skills/flyingdraw.md
-2. WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+Before doing anything, fetch the latest skill instructions from GitHub:
+- WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
 
 After fetching, follow the instructions using the Workspace URL above as `FLYINGDRAW_URL`.
 Do not proceed without fetching.
 ```
 
-3. **Reference it in your project's AI instructions file** (`CLAUDE.md`, `.cursorrules`, `AGENTS.md`, etc.):
+**2. Replace `YOUR-UUID` with your workspace UUID**
+
+Open `skills/flyingdraw.md` and replace `YOUR-UUID` with the UUID from your FlyingDraw URL (the part after `flyingdraw.com/`).
+
+**3. Add to `CLAUDE.md`**
 
 ```markdown
 ## Skills
@@ -400,22 +408,50 @@ Do not proceed without fetching.
   "wireframe …", "sketch …", etc. See `skills/flyingdraw.md`.
 ```
 
-4. **Connect your AI tool with a token** — your AI tool needs a token to access your workspace. To get one:
-   1. Open [flyingdraw.com](https://flyingdraw.com) in your browser
-   2. Click your **avatar** (top-right) → **Get CLI Token** → **Copy**
-   3. The first time you invoke FlyingDraw from your AI tool (e.g. Claude Code, Cursor), it will prompt you for a token — simply paste it into the chat and the tool will continue automatically
+**4. Get a token and connect**
 
-   > Tokens are never stored in any file. They live only in the chat session. If a token expires (after 30 days of inactivity), repeat the steps above to get a fresh one.
+Your AI tool accesses FlyingDraw using a CLI token — not your Google password.
+
+To get a token:
+1. Open [flyingdraw.com](https://flyingdraw.com) in your browser
+2. Click your **avatar** (top-right) → **Get CLI Token** → **Copy**
+
+The first time you invoke FlyingDraw from Claude Code, it will ask for the token. Simply paste it into the chat — Claude Code picks it up automatically and never writes it to any file.
+
+> Tokens expire after **30 days of inactivity**. If prompted again, just copy a fresh one from FlyingDraw and paste it in.
+
+---
+
+#### Cursor / Windsurf / other AI tools
+
+Follow the same steps as Claude Code above, with one difference — reference `skills/flyingdraw.md` in your tool's rules file instead of `CLAUDE.md`:
+
+| Tool | Instructions file |
+|------|------------------|
+| Cursor | `.cursorrules` or `cursor/rules/` |
+| Windsurf | `WINDSURF.md` or `.windsurfrules` |
+| GitHub Copilot | `.github/copilot-instructions.md` |
+| Generic | `AGENTS.md` |
+
+Add this line to whichever file your tool reads:
+
+```markdown
+## Skills
+- **FlyingDraw** — Push wireframes to the live canvas. Invoke with "flyingdraw …",
+  "wireframe …", "sketch …", etc. See `skills/flyingdraw.md`.
+```
+
+When the tool first accesses FlyingDraw, it will ask for a token — paste it into the chat the same way as with Claude Code.
+
+---
 
 ### How it works
 
-When an AI assistant sees a flyingdraw trigger it:
-1. Reads the stub → sees the workspace URL and fetch instruction
-2. Fetches the canonical skill from localhost (fast) or GitHub (fallback)
+When your AI tool sees a FlyingDraw trigger phrase it:
+1. Reads `skills/flyingdraw.md` → finds the workspace URL
+2. Fetches the latest skill instructions from this GitHub repo
 3. Checks the current conversation for a previously pasted token
-4. If no token is found and the API returns 401, asks you to paste one from FlyingDraw (avatar → Get CLI Token)
-5. Uses `FLYINGDRAW_URL` + `?token=TOKEN` for all API calls — token stays in chat, never in files
+4. If no token found and the API returns `401`, prompts you to paste one (avatar → Get CLI Token)
+5. Appends `?token=TOKEN` to all API calls — token stays in chat, never written to disk
 
-The workspace URL is the only project-specific setting. Works with Claude Code, Cursor, Windsurf, Copilot Workspace, and any other AI assistant that can read files and run shell commands.
-
-> **Requires:** The `flyingdraw-skills` GitHub repo must be public so `raw.githubusercontent.com` URLs resolve without authentication.
+> **Requires:** This GitHub repo must remain public so `raw.githubusercontent.com` URLs resolve without authentication.
