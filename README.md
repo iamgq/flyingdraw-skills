@@ -228,18 +228,26 @@ The AI will:
 
 ## How it works
 
-The stub in your project tells the AI your workspace URL and where to fetch the latest skill instructions. The AI fetches `flyingdraw.md` from this repo, then uses your workspace URL for all API calls.
+Once the stub file is in your project, everything else is automatic:
 
-Your workspace URL is the only project-specific config — the skill logic always comes from the latest version here.
+1. You trigger the skill (`flyingdraw a login screen`)
+2. Your AI tool reads the stub → finds your workspace URL
+3. The AI fetches the latest skill instructions from GitHub in the background
+4. It calls the FlyingDraw API using your workspace URL + token
+5. The wireframe appears in your browser instantly
+
+**You never need to clone this repo, visit GitHub, or manage the skill instructions manually.**
+The stub is the only file you own — the skill logic is always fetched fresh from the latest version here.
 
 ---
 
-## Skill reference
+## Advanced / contributing
 
-The full skill definition is in [`flyingdraw.md`](./flyingdraw.md). It covers:
+The full skill instructions live in [`flyingdraw.md`](./flyingdraw.md) in this repo. You don't need to read it to use the skill — it's there if you want to understand how the AI generates wireframes, or to contribute improvements.
 
+It covers:
 - Board and project structure
 - Step-by-step draw workflow
 - Excalidraw JSON element format
 - Design principles and colour palette
-- All supported triggers
+- All supported trigger phrases
