@@ -372,13 +372,12 @@ Workspaces support real-time collaboration — multiple people can view and edit
 
 **1. Add `skills/flyingdraw.md` to your project**
 
-Download the stub file directly:
-
-> 📄 **[Download skills/flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md)** — save it as `skills/flyingdraw.md` in your project root
+**[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root.
 
 Or via terminal:
 ```bash
-mkdir -p skills && curl -o skills/flyingdraw.md https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/stub.md
+mkdir -p skills && curl -o skills/flyingdraw.md \
+  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/templates/flyingdraw.md
 ```
 
 Or create it manually with this content:
