@@ -2,7 +2,7 @@
 
 **Whiteboard for AI Agents.**
 
-Give your AI coding assistant a live Excalidraw canvas — it learns to draw via a skill file you drop into your project, and diagrams appear in your browser in real time.
+Give your AI Agent (e.g. Coding Agent) a live Excalidraw canvas — it learns to draw via a skill file you drop into your project, and diagrams appear in your browser in real time.
 
 Works with **Claude Code · Codex CLI · Cursor · Gemini CLI · GitHub Copilot · Windsurf**
 
