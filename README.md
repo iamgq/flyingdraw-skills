@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="fd-stacked-dark.svg" width="360" alt="FlyingDraw">
+</p>
+
 # FlyingDraw
 
 **Whiteboard for AI Agents.**
