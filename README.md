@@ -56,15 +56,18 @@ Workspaces support real-time collaboration — multiple people can view and edit
 
 ---
 
-## Setup by tool
+## Get started in 4 steps
 
-### Claude Code
+Every tool follows the same four steps — **only Step 1 differs by tool**. Steps 2–4 are identical for everyone.
 
-**1. Add `skills/flyingdraw.md` to your project**
+### 1. Add the skill file
 
-**[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root.
+One small file teaches your AI tool how to draw — no install needed. Set up the file for your tool below, then continue to Step 2. (You'll fill in your workspace URL in Step 3 — leave the `YOUR-UUID` placeholder for now.)
 
-Or create `skills/flyingdraw.md` with this content:
+#### Claude Code
+
+**[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root, or create it with this content:
+
 ```markdown
 ---
 name: flyingdraw
@@ -83,9 +86,7 @@ Then follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
 Do not proceed without fetching.
 ```
 
-**2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.
-
-**3. Register it in `CLAUDE.md`:**
+Then register it in `CLAUDE.md`:
 
 ```markdown
 ## Skills
@@ -93,13 +94,9 @@ Do not proceed without fetching.
   "wireframe …", "sketch …", etc. See `skills/flyingdraw.md`.
 ```
 
-**4. Get a token and connect** — in FlyingDraw: avatar → **Get CLI Token** → **Copy**. When Claude Code asks for a token, paste it into the chat.
+#### Codex CLI
 
----
-
-### Codex CLI
-
-**1. Create `skills/flyingdraw.md` with this content:**
+Create `skills/flyingdraw.md` with this content:
 
 ```markdown
 # FlyingDraw
@@ -114,9 +111,7 @@ Then follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
 Do not proceed without fetching.
 ```
 
-**2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.
-
-**3. Register it in `AGENTS.md`:**
+Then register it in `AGENTS.md`:
 
 ```markdown
 ## Skills
@@ -124,13 +119,9 @@ Do not proceed without fetching.
   "wireframe …", "sketch …", etc. See `skills/flyingdraw.md`.
 ```
 
-**4. Get a token and connect** — in FlyingDraw: avatar → **Get CLI Token** → **Copy**. When the tool asks for a token, paste it into the chat.
+#### Cursor
 
----
-
-### Cursor
-
-**1. Create `.cursor/rules/flyingdraw.mdc` in your project:**
+Create `.cursor/rules/flyingdraw.mdc` with this content:
 
 ```markdown
 ---
@@ -150,15 +141,9 @@ Then follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
 Do not proceed without fetching.
 ```
 
-**2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.
+#### Gemini CLI
 
-**3. Get a token and connect** — in FlyingDraw: avatar → **Get CLI Token** → **Copy**. When Cursor asks for a token, paste it into the chat.
-
----
-
-### Gemini CLI
-
-**1. Create `skills/flyingdraw.md` with this content:**
+Create `skills/flyingdraw.md` with this content:
 
 ```markdown
 # FlyingDraw
@@ -173,9 +158,7 @@ Then follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
 Do not proceed without fetching.
 ```
 
-**2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.
-
-**3. Register it in `GEMINI.md`:**
+Then register it in `GEMINI.md`:
 
 ```markdown
 ## Skills
@@ -183,13 +166,9 @@ Do not proceed without fetching.
   "wireframe …", "sketch …", etc. See `skills/flyingdraw.md`.
 ```
 
-**4. Get a token and connect** — in FlyingDraw: avatar → **Get CLI Token** → **Copy**. When the tool asks for a token, paste it into the chat.
+#### GitHub Copilot
 
----
-
-### GitHub Copilot
-
-**1. Add to `.github/copilot-instructions.md`** in your project (create if it doesn't exist):
+Add to `.github/copilot-instructions.md` (create if it doesn't exist):
 
 ```markdown
 ## FlyingDraw
@@ -203,15 +182,9 @@ When the user says "flyingdraw", "wireframe", "sketch", or "mock":
 Do not proceed without fetching.
 ```
 
-**2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.
+#### Windsurf
 
-**3. Get a token and connect** — in FlyingDraw: avatar → **Get CLI Token** → **Copy**. When Copilot asks for a token, paste it into the chat.
-
----
-
-### Windsurf
-
-**1. Add to `.windsurfrules`** in your project root (create if it doesn't exist):
+Add to `.windsurfrules` in your project root (create if it doesn't exist):
 
 ```markdown
 ## FlyingDraw
@@ -225,9 +198,22 @@ When the user says "flyingdraw", "wireframe", "sketch", or "mock":
 Do not proceed without fetching.
 ```
 
-**2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.
+### 2. Create your workspace
 
-**3. Get a token and connect** — in FlyingDraw: avatar → **Get CLI Token** → **Copy**. When Windsurf asks for a token, paste it into the chat.
+Sign in with Google at [flyingdraw.com](https://flyingdraw.com) to open your own private workspace. This is your board.
+
+### 3. Connect your workspace
+
+Your agent needs two things — your workspace URL and a token. Get both from your **avatar menu** (top-right of your board):
+
+- **Workspace URL** → click **Copy workspace URL**, then paste it into the skill file from Step 1 (it replaces the `YOUR-UUID` placeholder).
+- **Token** → click **Get CLI Token**, then paste it into the chat when your agent asks. For your security it's never saved to a file.
+
+> In a hurry? Skip the file edit — just paste your URL and token into the chat when your agent prompts you.
+
+### 4. Just flyingdraw it
+
+Ask your AI agent to "flyingdraw" just about anything — "flyingdraw a login screen" — and watch it appear live on your board.
 
 ---
 
