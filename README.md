@@ -31,7 +31,7 @@ The file contains two things:
 1. **Your workspace URL** — the only project-specific config
 2. **A fetch instruction** — tells the agent to pull the latest skill spec from GitHub before drawing
 
-When triggered, the agent fetches [`skill.md`](./skill.md) from this repo and learns:
+When triggered, the agent fetches [`skill.md`](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/skill.md) from this repo and learns:
 
 - **The diagram JSON element format** — every required field for rectangles, ellipses, arrows, text, lines, and diamonds
 - **Design rules** — 800px canvas, colour palette, roughness levels, z-ordering
@@ -255,7 +255,7 @@ The stub file is the only file you own — the skill logic is always fetched fre
 
 ## Advanced / contributing
 
-The full skill instructions live in [`skill.md`](./skill.md). You don't need to read it to use the skill — it's there if you want to understand how the agent generates wireframes, or to contribute improvements.
+The full skill instructions live in [`skill.md`](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/skill.md). You don't need to read it to use the skill — it's there if you want to understand how the agent generates wireframes, or to contribute improvements.
 
 It covers:
 - Board and project structure
