@@ -64,10 +64,23 @@ Workspaces support real-time collaboration — multiple people can view and edit
 
 **[⬇ Download flyingdraw.md](https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md)** — save it as `skills/flyingdraw.md` in your project root.
 
-Or via terminal:
-```bash
-mkdir -p skills && curl -o skills/flyingdraw.md \
-  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+Or create `skills/flyingdraw.md` with this content:
+```markdown
+---
+name: flyingdraw
+description: Push wireframes to FlyingDraw canvas. Triggers on "flyingdraw", "wireframe", "sketch", "mock".
+---
+
+# FlyingDraw
+
+**Workspace URL:** https://www.flyingdraw.com/YOUR-UUID
+(Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
+
+When triggered, fetch the latest skill instructions from GitHub:
+- WebFetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/skill.md
+
+Then follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
+Do not proceed without fetching.
 ```
 
 **2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.
@@ -86,11 +99,19 @@ mkdir -p skills && curl -o skills/flyingdraw.md \
 
 ### Codex CLI
 
-**1. Add `skills/flyingdraw.md` to your project**
+**1. Create `skills/flyingdraw.md` with this content:**
 
-```bash
-mkdir -p skills && curl -o skills/flyingdraw.md \
-  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+```markdown
+# FlyingDraw
+
+**Workspace URL:** https://www.flyingdraw.com/YOUR-UUID
+(Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
+
+When triggered, fetch the latest skill instructions from GitHub:
+- Fetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/skill.md
+
+Then follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
+Do not proceed without fetching.
 ```
 
 **2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.
@@ -137,11 +158,19 @@ Do not proceed without fetching.
 
 ### Gemini CLI
 
-**1. Add `skills/flyingdraw.md` to your project**
+**1. Create `skills/flyingdraw.md` with this content:**
 
-```bash
-mkdir -p skills && curl -o skills/flyingdraw.md \
-  https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/flyingdraw.md
+```markdown
+# FlyingDraw
+
+**Workspace URL:** https://www.flyingdraw.com/YOUR-UUID
+(Replace YOUR-UUID with your workspace UUID from the FlyingDraw browser tab.)
+
+When triggered, fetch the latest skill instructions from GitHub:
+- Fetch https://raw.githubusercontent.com/iamgq/flyingdraw-skills/main/skill.md
+
+Then follow the instructions using the Workspace URL above as FLYINGDRAW_URL.
+Do not proceed without fetching.
 ```
 
 **2. Replace `YOUR-UUID`** with the UUID from your FlyingDraw URL.

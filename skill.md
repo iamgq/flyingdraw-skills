@@ -83,7 +83,7 @@ When pushing a diagram you must always supply both `_boardProject` and `_boardNa
 
 ## Steps
 
-### Step 1 — Resolve the workspace URL, token, and check the server is running
+### Step 1 — Resolve the workspace URL, token, and check FlyingDraw is reachable
 
 Read `FLYINGDRAW_URL` from the stub file that invoked this skill. This is the bare workspace URL — it does **not** contain a token.
 
@@ -94,16 +94,14 @@ Read `FLYINGDRAW_URL` from the stub file that invoked this skill. This is the ba
 
 ```bash
 echo "FLYINGDRAW_URL=$FLYINGDRAW_URL"
-curl -s "${FLYINGDRAW_URL}/api/projects${TOKEN_PARAM}" > /dev/null 2>&1 && echo "running" || echo "not running"
+curl -s "${FLYINGDRAW_URL}/api/projects${TOKEN_PARAM}" > /dev/null 2>&1 && echo "reachable" || echo "not reachable"
 ```
 
 - If `FLYINGDRAW_URL` is empty: tell the user:
   > "Your `skills/flyingdraw.md` stub is missing the Workspace URL. Open FlyingDraw in your browser, copy the full URL from the address bar (e.g. `https://www.flyingdraw.com/b450fda4-…`), and paste it into the stub as shown in the Installing section."
   > Stop here.
-- If **not running**: tell the user:
-  > "FlyingDraw isn't running. Start it with:
-  > `cd ~/Desktop/POC/flying-draw && npm run dev`
-  > Then try again."
+- If **not reachable**: tell the user:
+  > "Can't reach FlyingDraw at `$FLYINGDRAW_URL`. Check that the workspace URL is correct (re-copy it from your browser's address bar), that you're signed in at [flyingdraw.com](https://flyingdraw.com) with Google, and that you have a working internet connection. Then try again."
   > Stop here.
 
 **Token request flow** — trigger this whenever any API call returns `401`:
