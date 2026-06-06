@@ -215,6 +215,9 @@ Tell the user:
 > "Wireframe pushed to **[project] / [board]** — check $FLYINGDRAW_URL ✓"
 > Briefly describe what sections/elements you drew (1–2 lines).
 
+Also reassure the user about the live view:
+> "This switched the live canvas to show **[board]**. Any other board you had open wasn't overwritten — click it in the boards panel to return to its saved copy."
+
 ---
 
 ## Excalidraw JSON Format
@@ -347,6 +350,7 @@ Elements render bottom-to-top by index. Use ascending 3-character base-36 string
 - **Keep it low-fi** — this is a wireframe, not a finished design. Rough shapes and placeholder text are correct.
 - **Preserve user's existing drawings** unless they explicitly ask for a new/fresh diagram
 - If the user annotates or edits the diagram, read the file back before making changes
+- **The live canvas is single and shared** — every push switches it to the pushed board. Pushing one board never overwrites another; each board's saved copy is independent. Reassure the user they can click any board in the panel to view its saved copy.
 
 ---
 
