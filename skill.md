@@ -85,7 +85,17 @@ When pushing a diagram you must always supply both `_boardProject` and `_boardNa
 
 ### Step 1 — Resolve the workspace URL, token, and check FlyingDraw is reachable
 
-Read `FLYINGDRAW_URL` from the stub file that invoked this skill. This is the bare workspace URL — it does **not** contain a token.
+**Resolve `FLYINGDRAW_URL`** (the bare workspace URL — it does **not** contain a token) in this exact priority order:
+
+1. **Saved override** — if a `skills/flyingdraw.local.md` file exists, read its `Workspace URL:` value and use it. Tell the user once: "Using your saved workspace from `skills/flyingdraw.local.md`." Skip the rest of the resolution.
+2. **Team stub** — else, if the stub file that invoked this skill contains a **`Team workspace URL:`** line, this repo is set up with a shared team workspace. Ask the user:
+   > "This repo has a shared **team** FlyingDraw workspace. Draw on the **team** workspace, or your **own** personal one?"
+   - **Team** → use the team URL, and save it (see "Saving the URL" below) so you don't ask again.
+   - **Personal** → ask the user to paste their own workspace URL (`https://www.flyingdraw.com/<their-uuid>`), use it, and save it.
+3. **Plain stub URL** — else, if the stub contains a `**Workspace URL:**` line with a real URL (not the `YOUR-UUID` placeholder), use it directly. **Do not prompt and do not write any file** — this is the standard single-workspace setup.
+4. **Missing / placeholder** — else (only the `YOUR-UUID` placeholder, or no URL at all), ask the user to paste their workspace URL, use it, and save it.
+
+**Saving the URL** (resolution steps 2 and 4 only): write `skills/flyingdraw.local.md` containing exactly one line — `Workspace URL: <resolved URL>` — then tell the user: "Saved to `skills/flyingdraw.local.md` (gitignored, never committed); I won't ask again — delete that file to switch workspaces." The workspace **URL is the only value ever written to a file — never write the token.**
 
 **Set up the token for this session:**
 - Scan the current conversation for a URL that matches the workspace base and contains `?token=` — the user may have already pasted one.
@@ -97,8 +107,8 @@ echo "FLYINGDRAW_URL=$FLYINGDRAW_URL"
 curl -s "${FLYINGDRAW_URL}/api/projects${TOKEN_PARAM}" > /dev/null 2>&1 && echo "reachable" || echo "not reachable"
 ```
 
-- If `FLYINGDRAW_URL` is empty: tell the user:
-  > "Your `skills/flyingdraw.md` stub is missing the Workspace URL. Open FlyingDraw in your browser, copy the full URL from the address bar (e.g. `https://www.flyingdraw.com/b450fda4-…`), and paste it into the stub as shown in the Installing section."
+- If you could not resolve a `FLYINGDRAW_URL` (the stub had no usable URL and the user declined to paste one): tell the user:
+  > "I need your FlyingDraw workspace URL to continue. Open FlyingDraw in your browser, copy the full URL from the address bar (e.g. `https://www.flyingdraw.com/b450fda4-…`), and paste it here."
   > Stop here.
 - If **not reachable**: tell the user:
   > "Can't reach FlyingDraw at `$FLYINGDRAW_URL`. Check that the workspace URL is correct (re-copy it from your browser's address bar), that you're signed in at [flyingdraw.com](https://flyingdraw.com) with Google, and that you have a working internet connection. Then try again."
@@ -379,6 +389,8 @@ Workspaces support real-time collaboration — multiple people can view and edit
 
    Then open the file and replace `https://www.flyingdraw.com/YOUR-UUID` with your actual workspace URL from step 1.
 
+   **Shared repo with multiple engineers?** In the committed stub, use a `**Team workspace URL:**` line instead of `**Workspace URL:**`. On first use the skill asks each engineer whether to draw on the **team** workspace or their **own**; a personal choice is saved to a gitignored `skills/flyingdraw.local.md` that overrides the team default without touching the committed stub. Add `skills/flyingdraw.local.md` to your `.gitignore`. Note: for the team workspace, every engineer must be able to mint a token for it — make that workspace **public**, or add them as **members** — otherwise their token request will be rejected.
+
    Or create it manually:
 
 ```markdown
@@ -412,7 +424,7 @@ Do not proceed without fetching.
 ### How it works
 
 When an AI assistant sees a flyingdraw trigger it:
-1. Reads the stub → sees the workspace URL and fetch instruction
+1. Resolves the workspace URL — a saved `skills/flyingdraw.local.md` override first, otherwise the stub's `Workspace URL:` / `Team workspace URL:` line — and reads the fetch instruction
 2. Fetches the canonical skill instructions from GitHub
 3. Checks the current conversation for a previously pasted token
 4. If no token is found and the API returns 401, asks you to paste one from FlyingDraw (avatar → Get CLI Token)
